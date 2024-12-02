@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Insights</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        header, footer {
+            text-align: center;
+            background-color: #00796b;
+            color: white;
+            padding: 10px 0;
+        }
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        label, input, button {
+            font-size: 16px;
+        }
+        button {
+            background-color: #00796b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        img {
+            max-width: 100%;
+            margin-top: 20px;
+        }
+        .recommendations {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f4f4f4;
+            border-left: 4px solid #00796b;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Health Insights</h1>
+    </header>
+    <main>
+        <h2>Enter Your Health Parameters</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <label for="heartRate">Heart Rate (BPM):</label>
+            <input type="number" id="heartRate" name="heart_rate" required>
+            
+            <label for="oxygenLevel">Oxygen Saturation (%):</label>
+            <input type="number" id="oxygenLevel" name="oxygen_level" required>
+            
+            <label for="bloodPressure">Blood Pressure (mmHg):</label>
+            <input type="text" id="bloodPressure" name="blood_pressure" required>
+            
+            <label for="bodyTemp">Body Temperature (°C):</label>
+            <input type="number" id="bodyTemp" name="body_temperature" step="0.1" required>
+            
+            <label for="stepsTaken">Steps Taken:</label>
+            <input type="number" id="stepsTaken" name="steps_taken" required>
+            
+            <label for="waterIntake">Water Intake (Liters):</label>
+            <input type="number" id="waterIntake" name="water_intake" step="0.1" required>
+            
+            <label for="caloriesBurnt">Calories Burnt:</label>
+            <input type="number" id="caloriesBurnt" name="calories_burnt" required>
+            
+            <button type="submit">Submit</button>
+        </form>
+
+        {% if analysis %}
+        <div class="results">
+            <h3>Analysis Results:</h3>
+            <p>{{ analysis }}</p>
+            <h4>Visualizations:</h4>
+            <img src="data:image/png;base64,{{ charts.heart_rate }}" alt="Heart Rate Chart">
+            <img src="data:image/png;base64,{{ charts.oxygen_level }}" alt="Oxygen Level Chart">
+            <img src="data:image/png;base64,{{ charts.body_temperature }}" alt="Body Temperature Chart">
+            <img src="data:image/png;base64,{{ charts.steps_taken }}" alt="Steps Taken Chart">
+            <img src="data:image/png;base64,{{ charts.water_intake }}" alt="Water Intake Chart">
+            <img src="data:image/png;base64,{{ charts.calories_burnt }}" alt="Calories Burnt Chart">
+        </div>
+        <div class="recommendations">
+            <h3>Recommendations:</h3>
+            <ul>
+                {% for recommendation in recommendations %}
+                <li>{{ recommendation }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </main>
+    <footer>
+        <p>Smart Health Monitoring System © 2024</p>
+    </footer>
+</body>
+</html>

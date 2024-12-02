@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Wellness Transactions</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            padding: 40px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            max-height: calc(100vh - 20px);
+        }
+
+        .table-container {
+            width: 90%;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .search-form {
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            padding: 10px;
+            width: 80%;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .search-button,
+        .add-button {
+            padding: 10px 20px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* .search-button { background-color: #4CAF50; } */
+        .add-button {
+            background-color: #007bff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Wellness Transactions</h1>
+
+        <!-- Search Form -->
+        <form class="search-form" method="get" action="{% url 'wellness' %}">
+            <input type="text" name="search" placeholder="Search by category or description..."
+                value="{{ search_query }}" class="search-input">
+            <button type="submit" class="search-button"
+                style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px;">Search</button>
+        </form>
+
+        <!-- Add Transaction Button (redirects to Django admin) -->
+        <button class="add-button" onclick="window.location.href='/admin/myapp/wellness/add/'">Add
+            Transaction</button>
+
+        <!-- Transactions Table -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Amount</th>
+                        <th>Category</th>
+                        <th>Description</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in transactions %}
+                    <tr>
+                        <td>{{ transaction.amount }}</td>
+                        <td>{{ transaction.category }}</td>
+                        <td>{{ transaction.description }}</td>
+                        <td>{{ transaction.date|date:"Y-m-d" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" style="text-align: center;">No transactions found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
